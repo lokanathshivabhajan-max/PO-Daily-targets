@@ -3,236 +3,260 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daily Targets - PO Mains</title>
+    <title>Daily Study Routine Dashboard</title>
     <style>
         :root {
-            --bg: #0f172a;
-            --card-bg: #1e293b;
-            --primary: #6366f1;
-            --accent: #22c55e;
-            --text: #f8fafc;
+            --bg-color: #f1f5f9;
+            --panel-bg: #ffffff;
+            --primary: #0f172a;
+            --accent-eng: #3b82f6;
+            --accent-quant: #10b981;
+            --accent-reason: #8b5cf6;
+            --text-color: #334155;
+            --border-color: #e2e8f0;
+            --chip-bg: #f8fafc;
+            --chip-border: #cbd5e1;
+        }
+
+        /* Dark Mode Theme Variables */
+        [data-theme="dark"] {
+            --bg-color: #0f172a;
+            --panel-bg: #1e293b;
+            --primary: #f8fafc;
+            --text-color: #cbd5e1;
+            --border-color: #334155;
+            --chip-bg: #334155;
+            --chip-border: #475569;
         }
 
         body {
-            background: var(--bg);
-            color: var(--text);
-            font-family: 'Inter', sans-serif;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background-color: var(--bg-color);
             margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            padding: 30px 15px;
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s;
         }
-
-        /* Navigation Header */
-        .nav-header {
-            width: 100%;
-            max-width: 800px;
-            display: flex;
-            align-items: center;
-            position: relative;
-            margin-bottom: 40px;
-            padding: 10px 0;
-        }
-
-        .back-btn {
+        .container { max-width: 700px; margin: 0 auto; position: relative; }
+        h1 { text-align: center; color: var(--primary); margin-bottom: 30px; }
+        
+        /* Theme Toggle Button Styles */
+        .theme-toggle-btn {
             position: absolute;
-            left: 0;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--text);
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 500;
-            padding: 8px 16px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .back-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateX(-3px);
-        }
-
-        .title-group {
-            width: 100%;
-            text-align: center;
-        }
-
-        /* Loading Spinner */
-        #loader {
-            border: 4px solid rgba(255, 255, 255, 0.1);
-            border-left-color: var(--primary);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 50px auto;
-        }
-
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        #target-container {
-            width: 100%;
-            max-width: 600px;
-        }
-
-        .target-card {
-            background: var(--card-bg);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 20px;
-            border-radius: 15px;
-            margin-bottom: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .target-card:hover {
-            transform: translateY(-3px);
-            background: #2d3748;
-            border-color: var(--primary);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
-
-        .date-info h3 { margin: 0; font-size: 1.2rem; text-transform: capitalize; }
-        .date-info p { margin: 5px 0 0; color: #94a3b8; font-size: 0.85rem; }
-
-        .new-badge {
-            background: var(--accent);
-            padding: 4px 12px;
+            top: 0;
+            right: 0;
+            background: var(--panel-bg);
+            border: 1px solid var(--chip-border);
+            color: var(--text-color);
+            padding: 8px 14px;
             border-radius: 20px;
-            font-size: 0.7rem;
-            font-weight: bold;
-            box-shadow: 0 0 15px rgba(34, 197, 94, 0.4);
-            animation: pulse 1.5s infinite;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.6; }
-            100% { opacity: 1; }
-        }
-
-        #load-more {
-            background: rgba(255,255,255,0.05);
-            color: var(--text);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 12px 25px;
-            border-radius: 10px;
             cursor: pointer;
-            margin: 20px 0;
-            display: none;
-            transition: background 0.2s;
+            font-weight: 600;
+            font-size: 0.85rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: all 0.2s ease;
+        }
+        .theme-toggle-btn:hover {
+            opacity: 0.9;
         }
 
-        #load-more:hover { background: rgba(255,255,255,0.1); }
-
-        @media (max-width: 600px) {
-            .back-btn span { display: none; } /* Hide text on very small screens */
-            .back-btn { padding: 8px 12px; }
+        .day-card {
+            background: var(--panel-bg); border-radius: 12px; padding: 24px;
+            margin-bottom: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: background-color 0.3s;
         }
+        .day-date {
+            font-size: 1.3rem; font-weight: 700; color: var(--primary);
+            border-bottom: 3px solid var(--border-color); padding-bottom: 8px; margin-bottom: 20px;
+        }
+        .subject-row { margin-bottom: 18px; }
+        .subject-label { font-weight: 600; font-size: 1rem; margin-bottom: 6px; display: flex; align-items: center; color: var(--primary); }
+        .subject-label::before {
+            content: ''; display: inline-block; width: 8px; height: 16px; margin-right: 8px; border-radius: 2px;
+        }
+        .eng::before { background-color: var(--accent-eng); }
+        .quant::before { background-color: var(--accent-quant); }
+        .reason::before { background-color: var(--accent-reason); }
+        .topic-list { display: flex; flex-wrap: wrap; gap: 8px; padding-left: 16px; }
+        .topic-chip {
+            background: var(--chip-bg); border: 1px solid var(--chip-border);
+            padding: 6px 14px; border-radius: 20px; font-size: 0.9rem;
+            color: var(--text-color);
+        }
+        .empty-text { color: #94a3b8; font-style: italic; font-size: 0.9rem;}
     </style>
 </head>
 <body>
 
-    <div class="nav-header">
-        <a href="https://officialappaarav-spec.github.io/Banking-Mains/" class="back-btn">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-            <span>Back</span>
-        </a>
+    <div class="container">
+
+  <h1>Banking Mains Daily Routine</h1>
+        <div id="schedule-container">Syncing dynamic environment timeline...</div>
         
-        <div class="title-group">
-            <h1 style="font-size: 2rem; margin: 0;">Daily Targets</h1>
-            <p style="color: #94a3b8; margin: 5px 0 0;">PO Mains Practice</p>
-        </div>
+       
+
+      
     </div>
 
-    <div id="loader"></div>
-    <div id="target-container"></div>
-    <button id="load-more">Show Older Targets</button>
+     <button class="theme-toggle-btn" id="themeToggle">🌙 Dark Mode</button>
 
     <script>
-        let checkDate = new Date(); 
-        let loadedCount = 0;
-        const batchSize = 7;
-        const container = document.getElementById('target-container');
-        const loader = document.getElementById('loader');
-        const loadMoreBtn = document.getElementById('load-more');
+        const themeToggleBtn = document.getElementById('themeToggle');
         
-        let clickedItems = JSON.parse(localStorage.getItem('PO_clicked_targets')) || [];
+        // Check for saved user preference, otherwise default to light mode
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        themeToggleBtn.textContent = savedTheme === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode';
 
-        function formatDate(date) {
-            const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-            return `${date.getDate()}-${months[date.getMonth()]}-${date.getFullYear()}`;
+        themeToggleBtn.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            let newTheme = 'light';
+            
+            if (currentTheme === 'light') {
+                newTheme = 'dark';
+                themeToggleBtn.textContent = '☀️ Light Mode';
+            } else {
+                themeToggleBtn.textContent = '🌙 Dark Mode';
+            }
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+    </script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyB_z19eGh8n35C0XByD9fChlfz1anxkbic",
+            authDomain: "bankingmains-dailyschedule.firebaseapp.com",
+            projectId: "bankingmains-dailyschedule",
+            storageBucket: "bankingmains-dailyschedule.firebasestorage.app",
+            messagingSenderId: "1072941698992",
+            appId: "1:1072941698992:web:0eab789c9be802a275d075",
+            measurementId: "G-3GTXGXZ9C5"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Fallback schema for dates with no data assigned
+        const fallbackSchedule = {
+            english: ["Coming soon"],
+            quant: ["Coming soon"],
+            reasoning: ["Coming soon"]
+        };
+
+        // Helper to turn standard "DD MMM YYYY" text back into a real JS Date object for sorting or calculations
+        function parseCustomDate(dateStr) {
+            const months = { "Jan":0, "Feb":1, "Mar":2, "Apr":3, "May":4, "Jun":5, "Jul":6, "Aug":7, "Sep":8, "Oct":9, "Nov":10, "Dec":11 };
+            const parts = dateStr.split(" ");
+            if (parts.length === 3) {
+                return new Date(parts[2], months[parts[1]], parts[0]);
+            }
+            return new Date();
         }
 
-        async function fileExists(url) {
+        // Helper to convert a JS Date object into our friendly "DD MMM YYYY" text format
+        function formatCustomDate(dateObj) {
+            const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            return `${dateObj.getDate()} ${months[dateObj.getMonth()]} ${dateObj.getFullYear()}`;
+        }
+
+        async function initScheduleView() {
+            let limitDays = 2;
+            let currentSchedules = {};
+
             try {
-                const response = await fetch(url, { method: 'HEAD' });
-                return response.ok;
-            } catch (e) {
-                return false;
+                // Fetch display limit setting
+                const configSnap = await getDoc(doc(db, "settings", "scheduleConfig"));
+                if(configSnap.exists()) {
+                    limitDays = configSnap.data().daysToDisplay || 2;
+                }
+
+                // Fetch dynamic schedule data
+                const dataSnap = await getDoc(doc(db, "settings", "routineData"));
+                if(dataSnap.exists()) {
+                    currentSchedules = dataSnap.data().schedule || {};
+                }
+            } catch(e) {
+                console.error("Error connecting to Firebase infrastructure:", e);
             }
+
+            renderView(limitDays, currentSchedules);
         }
 
-        async function loadBatch() {
-            loader.style.display = 'block';
-            loadMoreBtn.style.display = 'none';
-            let foundInThisBatch = 0;
-            let attempts = 0;
-            const maxAttempts = 30; 
+        function renderView(limit, dataMatrix) {
+            const displayTarget = document.getElementById('schedule-container');
+            displayTarget.innerHTML = "";
 
-            while (foundInThisBatch < batchSize && attempts < maxAttempts) {
-                let dateStr = formatDate(checkDate);
-                let fileName = `${dateStr}.html`;
+            // 1. Get all the unique dates currently saved in your database and sort them properly
+            const savedDates = Object.keys(dataMatrix).sort((a, b) => parseCustomDate(a) - parseCustomDate(b));
+            
+            // Determine a baseline starting point to generate future dates if we run out of database items
+            let referenceDate = new Date();
+            if (savedDates.length > 0) {
+                referenceDate = parseCustomDate(savedDates[savedDates.length - 1]);
+            }
 
-                if (await fileExists(fileName)) {
-                    createCard(dateStr, fileName);
-                    foundInThisBatch++;
-                    attempts = 0; 
+            // 2. Loop directly up to the user-defined display limit set in the Admin view
+            for(let i = 0; i < limit; i++) {
+                let dateLabel = "";
+                let targetData = null;
+
+                if (i < savedDates.length) {
+                    // Use actual date and dataset entries found in Firebase database
+                    dateLabel = savedDates[i];
+                    targetData = dataMatrix[dateLabel];
                 } else {
-                    attempts++;
+                    // Database items exceeded! Generate chronological subsequent calendar entries
+                    const daysOffset = i - savedDates.length + 1;
+                    const futureDateObj = new Date(referenceDate);
+                    futureDateObj.setDate(referenceDate.getDate() + daysOffset);
+                    
+                    dateLabel = formatCustomDate(futureDateObj);
+                    targetData = fallbackSchedule; // assign "Coming soon" layout
                 }
-                checkDate.setDate(checkDate.getDate() - 1);
-            }
 
-            loader.style.display = 'none';
-            if (foundInThisBatch === batchSize) {
-                loadMoreBtn.style.display = 'block';
+                // If some subject array happens to be missing entirely, use fallback safe array
+                const englishTopics = targetData.english || ["Coming soon"];
+                const quantTopics = targetData.quant || ["Coming soon"];
+                const reasoningTopics = targetData.reasoning || ["Coming soon"];
+
+                const card = document.createElement('div');
+                card.className = 'day-card';
+                card.innerHTML = `
+                    <div class="day-date">${dateLabel}</div>
+                    
+                    <div class="subject-row">
+                        <div class="subject-label eng">English</div>
+                        <div class="topic-list">${generateChipsMarkup(englishTopics)}</div>
+                    </div>
+
+                    <div class="subject-row">
+                        <div class="subject-label quant">Quant</div>
+                        <div class="topic-list">${generateChipsMarkup(quantTopics)}</div>
+                    </div>
+
+                    <div class="subject-row">
+                        <div class="subject-label reason">Reasoning</div>
+                        <div class="topic-list">${generateChipsMarkup(reasoningTopics)}</div>
+                    </div>
+                `;
+                displayTarget.appendChild(card);
             }
         }
 
-        function createCard(dateStr, fileName) {
-            const isNew = !clickedItems.includes(dateStr);
-            const card = document.createElement('div');
-            card.className = 'target-card';
-            card.innerHTML = `
-                <div class="date-info">
-                    <h3>${dateStr.replace(/-/g, ' ')}</h3>
-                    <p>Mains Level Mock Test • po</p>
-                </div>
-                ${isNew ? `<div class="new-badge" id="badge-${dateStr}">NEW</div>` : ''}
-            `;
-
-            card.onclick = () => {
-                if (!clickedItems.includes(dateStr)) {
-                    clickedItems.push(dateStr);
-                    localStorage.setItem('PO_clicked_targets', JSON.stringify(clickedItems));
-                }
-                window.location.href = fileName;
-            };
-
-            container.appendChild(card);
+        function generateChipsMarkup(topicsArray) {
+            if(!topicsArray || topicsArray.length === 0) {
+                return `<span class="empty-text">No topics allocated</span>`;
+            }
+            return topicsArray.map(topic => `<span class="topic-chip">${topic}</span>`).join('');
         }
 
-        loadBatch();
-        loadMoreBtn.onclick = loadBatch;
+        // Run setup on load
+        initScheduleView();
     </script>
 </body>
 </html>
